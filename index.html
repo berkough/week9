@@ -3,10 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="js/tarot.js"></script>
+    <title>tarojs 1.5</title>
 </head>
 <body>
-    
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <div class="container-fluid" id="menu">
+            <a class="navbar-brand logo" href="#">tarotjs</a>
+        </div>
+    </nav>
+    <div class="contain" id="controls">
+
+    </div>
+    <div class="container" id="spread">
+        <div class="row">
+            <div class="col">
+                1
+            </div>
+            <div class="col" id="pos3">
+                2
+            </div>
+            <div class="col">
+                3
+            </div>
+            <div class="col" id="pos10">
+                4
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="pos6">
+                5
+            </div>
+            <div class="col" id="pos0">
+                6
+            </div>
+            <div class="col" id="pos5">
+                7
+            </div>
+            <div class="col" id="pos9">
+                8
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                9
+            </div>
+            <div class="col" id="pos4">
+                10
+            </div>
+            <div class="col">
+                11
+            </div>
+            <div class="col" id="pos8">
+                12
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="pos1">
+                13 
+            </div>
+            <div class="col" id="pos2">
+                14
+            </div>
+            <div class="col">
+                15
+            </div>
+            <div class="col" id="pos7">
+                16
+            </div>
+        </div>
+    </div>
+
+<!-- START ALL THE JAVASCRIPT -->
+
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script>
+        //Make our deck.
+        const deck = new DECK();
+        deck.getDeck(); //Call this so you can always draw cards from an unshuffled deck.
+
+        const alert = (message, type) => {
+        const wrapper = document.createElement('div')
+        wrapper.innerHTML = [
+            `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+            `   <div>${message}</div>`,
+            '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+            '</div>'
+        ].join('')
+
+        alertPlaceholder.append(wrapper)
+        }
+
+        /* ASK BUTTON */
+        //Clear the user entry, but store the question as a value. This will be used later.
+        document.getElementById("askBtn").addEventListener("click", () => {
+        let question = document.getElementById("question");
+        //document.getElementById("asked").innerHTML = question.value; //Save for later...
+        question.value = "";
+        });
+
+        /* SHUFFLE BUTTON */
+        //Call the shuffle method when the "Shuffle" button is pressed.
+        document.getElementById("shufBtn").addEventListener("click", () => {
+        document.getElementById("cardBack").classList.add("shuffle"); // Add an animation so the deck "shuffles".
+        deck._deck = []; //Empty this variable.
+        deck.getDeck(); //Re-assemble the deck.
+        deck.shuffle(); //Then shuffle it.
+        setTimeout(() => {
+            document.getElementById("cardBack").classList.remove("shuffle");
+        }, 1001); //Remove the animation class so it can be re-applied when the button is clicked again.
+        console.log(deck._deck);
+        });
+
+        /* SIGNIFACTOR BUTTON */
+        //Pull the Signifactor when that button is clicked.
+        document.getElementById("sigBtn").addEventListener("click", () => {
+        //Trumps do not have a "Suit" keypair and vice versa. Determine which to use.
+        deck.suitTrumpM(0);
+        //Call the IMG and dump it into the span based on the top card of the deck.
+        document.getElementById("pos0").innerHTML =
+            '<img src="img/cards/' +
+            deck._deck[0].Place +
+            "-" +
+            deck.suitTrump +
+            '.jpg" class="signifactor img-fluid">';
+        console.log("Signifactor", deck._deck[0]);
+        });
+
+        /* COVER CARD BUTTON */
+        //Pull the Cover Card.
+        document.getElementById("coverBtn").addEventListener("click", () => {
+        if (document.getElementById('pos0').innerHTML === '') {
+            alert('You need to pull a Signifactor first!','danger');
+        } else {
+            //Trumps do not have a "Suit" keypair and vice versa. Determine which to use.
+            deck.suitTrumpM(1);
+            //Call the IMG and dump it into the span based on the top card of the deck.
+            document.getElementById("pos0").innerHTML +=
+            '<img src="img/cards/' +
+            deck._deck[1].Place +
+            "-" +
+            deck.suitTrump +
+            '.jpg" class="covers img-fluid">';
+            console.log("Cover", deck._deck[1]);
+        }
+        });
+
+        /* CROSS CARD BUTTON */
+        //Pull the Cross Card.
+        document.getElementById("crossBtn").addEventListener("click", () => {
+        if (document.getElementById('pos0').innerHTML === '') {
+            alert('You need to pull a Signifactor first!','danger');
+        } else {
+            //Trumps do not have a "Suit" keypair and vice versa. Determine which to use.
+            deck.suitTrumpM(2);
+            //Call the IMG and dump it into the span based on the top card of the deck.
+            document.getElementById("pos0").innerHTML +=
+            '<img src="img/cards/' +
+            deck._deck[2].Place +
+            "-" +
+            deck.suitTrump +
+            '.jpg" class="cross img-fluid">';
+            console.log("Cross", deck._deck[2]);
+        }
+        });
+
+        /* LAY SPREAD BUTTON */
+        //Pull the rest of the cards needed for the Spread using a for loop and dump them into the table. We don't do them one at a time because they are just pulled in order, no fancy CSS.
+        document.getElementById("laySpread").addEventListener("click", () => {
+        if (document.getElementById('pos0').innerHTML === ''){
+            alert('You need to pull a Signifactor first!','danger');
+        } else { //Do the same thing as the others, but do it in a for loop to pull the other cards needed.
+            for (i = 3; i < 11; i++) {
+            deck.suitTrumpM(i);
+            let position = "pos" + i.toString();
+            document.getElementById(position).innerHTML =
+                '<img src="img/cards/' +
+                deck._deck[i].Place +
+                "-" +
+                deck.suitTrump +
+                '.jpg" class="img-fluid">';
+            console.log(position, deck._deck[i]);
+            }
+        }
+        });
+
+        /* CLEAR BUTTON */
+        //Clear everything!
+        document.getElementById("clear").addEventListener("click", () => {
+        for (i = 0; i < 11; i++) {
+            deck.suitTrumpM(i);
+            let position = "pos" + i.toString();
+            document.getElementById(position).innerHTML = "";
+        }
+        });
+    </script>
 </body>
 </html>
