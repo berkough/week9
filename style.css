@@ -8,8 +8,52 @@ html,body{
 }
 .logo {
   font-family: caligraphy;
-  font-size: xx-large;
+  font-size: 3em;
 }
+
+.btn-bd-primary {
+  --bs-btn-font-weight: 600;
+  --bs-btn-color: var(--bs-white);
+  --bs-btn-bg: var(--bd-violet);
+  --bs-btn-border-color: var(--bd-violet);
+  --bs-btn-border-radius: .5rem;
+  --bs-btn-hover-color: var(--bs-white);
+  --bs-btn-hover-bg: #{shade-color($bd-violet, 10%)};
+  --bs-btn-hover-border-color: #{shade-color($bd-violet, 10%)};
+  --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+  --bs-btn-active-color: var(--bs-btn-hover-color);
+  --bs-btn-active-bg: #{shade-color($bd-violet, 20%)};
+  --bs-btn-active-border-color: #{shade-color($bd-violet, 20%)};
+}
+
+.parent {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.signifactor {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.covers {
+  position: absolute;
+  top: -5px;
+  left: 1px;
+  transform: rotate(8deg);
+  max-height: 100%;
+  object-fit: scale-down;
+}
+.cross {
+  position: absolute;
+  top: 20px;
+  left: 5px;
+  transform: rotate(-90deg);
+  max-height: 100%;
+  object-fit: scale-down;
+}
+
 /*  Shamelessly stolen from W3 Schools https://www.w3schools.com/howto/howto_css_shake_image.asp */
 .shuffle {
   animation: shake 0.5s;

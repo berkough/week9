@@ -10,70 +10,48 @@
     <title>tarojs 1.5</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid" id="menu">
             <a class="navbar-brand logo" href="#">tarotjs</a>
         </div>
     </nav>
-    <div class="contain" id="controls">
-
+    <div class="float-end p-3">
+        <a href="#" id="shufBtn"><img src="cards/CardBack.jpg" width="100px" max-height="auto" 
+            alt="deck" class="align-text-top" id="cardBack"></a>
+        <div class="d-grid gap-2"><button class="btn btn-primary" id="clear">Clear</button></div>
     </div>
-    <div class="container" id="spread">
+    <div id="liveAlertPlaceholder"></div>
+    <div class="btn-group" id="controls">
+        <button class="btn btn-primary" id="askBtn">Ask Question</button>
+        <button class="btn btn-primary" id="sigBtn">Pull Signifactor</button>
+        <button class="btn btn-primary" id="coverBtn">Cover Card</button>
+        <button class="btn btn-primary" id="crossBtn">Cross Card</button>
+        <button class="btn btn-primary" id="laySpread">Lay Spread</button>
+    </div>
+    <div class="container-fluid float-start p-2" id="spread">
         <div class="row">
-            <div class="col">
-                1
-            </div>
-            <div class="col" id="pos3">
-                2
-            </div>
-            <div class="col">
-                3
-            </div>
-            <div class="col" id="pos10">
-                4
-            </div>
+            <div class="col"></div>
+            <div class="col" id="pos3"></div>
+            <div class="col"></div>
+            <div class="col" id="pos10"></div>
         </div>
         <div class="row">
-            <div class="col" id="pos6">
-                5
-            </div>
-            <div class="col" id="pos0">
-                6
-            </div>
-            <div class="col" id="pos5">
-                7
-            </div>
-            <div class="col" id="pos9">
-                8
-            </div>
+            <div class="col" id="pos6"></div>
+            <div class="col parent" id="pos0"></div>
+            <div class="col" id="pos5"></div>
+            <div class="col" id="pos9"></div>
         </div>
         <div class="row">
-            <div class="col">
-                9
-            </div>
-            <div class="col" id="pos4">
-                10
-            </div>
-            <div class="col">
-                11
-            </div>
-            <div class="col" id="pos8">
-                12
-            </div>
+            <div class="col"></div>
+            <div class="col" id="pos4"></div>
+            <div class="col"></div>
+            <div class="col" id="pos8"></div>
         </div>
         <div class="row">
-            <div class="col" id="pos1">
-                13 
-            </div>
-            <div class="col" id="pos2">
-                14
-            </div>
-            <div class="col">
-                15
-            </div>
-            <div class="col" id="pos7">
-                16
-            </div>
+            <div class="col" id="pos1"></div>
+            <div class="col" id="pos2"></div>
+            <div class="col"></div>
+            <div class="col" id="pos7"></div>
         </div>
     </div>
 
@@ -85,16 +63,17 @@
         const deck = new DECK();
         deck.getDeck(); //Call this so you can always draw cards from an unshuffled deck.
 
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
         const alert = (message, type) => {
-        const wrapper = document.createElement('div')
+        const wrapper = document.createElement('div');
         wrapper.innerHTML = [
             `<div class="alert alert-${type} alert-dismissible" role="alert">`,
             `   <div>${message}</div>`,
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
             '</div>'
-        ].join('')
+        ].join('');
 
-        alertPlaceholder.append(wrapper)
+        alertPlaceholder.append(wrapper);
         }
 
         /* ASK BUTTON */
@@ -125,7 +104,7 @@
         deck.suitTrumpM(0);
         //Call the IMG and dump it into the span based on the top card of the deck.
         document.getElementById("pos0").innerHTML =
-            '<img src="img/cards/' +
+            '<img src="cards/' +
             deck._deck[0].Place +
             "-" +
             deck.suitTrump +
@@ -143,7 +122,7 @@
             deck.suitTrumpM(1);
             //Call the IMG and dump it into the span based on the top card of the deck.
             document.getElementById("pos0").innerHTML +=
-            '<img src="img/cards/' +
+            '<img src="cards/' +
             deck._deck[1].Place +
             "-" +
             deck.suitTrump +
@@ -162,7 +141,7 @@
             deck.suitTrumpM(2);
             //Call the IMG and dump it into the span based on the top card of the deck.
             document.getElementById("pos0").innerHTML +=
-            '<img src="img/cards/' +
+            '<img src="cards/' +
             deck._deck[2].Place +
             "-" +
             deck.suitTrump +
@@ -181,7 +160,7 @@
             deck.suitTrumpM(i);
             let position = "pos" + i.toString();
             document.getElementById(position).innerHTML =
-                '<img src="img/cards/' +
+                '<img src="cards/' +
                 deck._deck[i].Place +
                 "-" +
                 deck.suitTrump +
@@ -195,7 +174,6 @@
         //Clear everything!
         document.getElementById("clear").addEventListener("click", () => {
         for (i = 0; i < 11; i++) {
-            deck.suitTrumpM(i);
             let position = "pos" + i.toString();
             document.getElementById(position).innerHTML = "";
         }
