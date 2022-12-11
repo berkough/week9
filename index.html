@@ -89,7 +89,7 @@
         deck.getDeck(); //Call this so you can always draw cards from an unshuffled deck.
 
         const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
-        const explanation =document.getElementById('explanation');
+        const explanation = document.getElementById('explanation');
         const alert = (message, type) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = [
@@ -136,7 +136,8 @@
             deck.suitTrump +
             '.jpg" class="signifactor img-fluid">';
         console.log("Signifactor", deck._deck[0]);
-        explanation.innerHTML = `<p><a href="cards.html#${deck._deck[0].Place}-${deck.suitTrump}">${deck._deck[0].Place} - ${deck.suitTrump}</a></p>`;
+        explanation.innerHTML = `<p><h2><a href="cards.html#${deck._deck[0].Place}-${deck.suitTrump}">${deck._deck[0].Place} - ${deck.suitTrump}</h2></a><br>
+            </p>`;
         });
 
         /* COVER CARD BUTTON */
