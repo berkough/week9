@@ -10,24 +10,45 @@
     <title>tarojs 1.5</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container-fluid" id="menu">
-            <a class="navbar-brand logo" href="#">tarotjs</a>
+    <nav class="navbar navbar-dark navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="index.html">Main</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="instructions.html">Instructions</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="cards.html">Card Meanings</a>
+              </li>
+            </ul>
+          </div>
         </div>
-    </nav>
-    <div class="float-end p-3">
-        <a href="#" id="shufBtn"><img src="cards/CardBack.jpg" width="100px" max-height="auto" 
-            alt="deck" class="align-text-top" id="cardBack"></a>
+      </nav>
+    <div class="float-start">
+        <h1 class="logo">tarotjs</h1>
+        <p>(Click the deck to shuffle.)</p>
+    </div>
+    <div class="float-end p-3" id="deck">
+        <a href="#" id="shufBtn"><img src="cards/CardBack.jpg" class="desc" alt="deck" class="align-text-top" id="cardBack"></a>
         <div class="d-grid gap-2"><button class="btn btn-primary" id="clear">Clear</button></div>
     </div>
-    <div id="liveAlertPlaceholder"></div>
+    <div class="input-group" id="question">
+        <input type="text" class="form-control" placeholder="What do you wish to ask?" aria-label="question" aria-describedby="askBtn">
+        <button class="btn btn-primary" type="button" id="askBtn">Ask Question</button>
+    </div>
     <div class="btn-group" id="controls">
-        <button class="btn btn-primary" id="askBtn">Ask Question</button>
         <button class="btn btn-primary" id="sigBtn">Pull Signifactor</button>
         <button class="btn btn-primary" id="coverBtn">Cover Card</button>
         <button class="btn btn-primary" id="crossBtn">Cross Card</button>
         <button class="btn btn-primary" id="laySpread">Lay Spread</button>
     </div>
+    <div id="liveAlertPlaceholder"></div>
     <div class="container-fluid float-start p-2" id="spread">
         <div class="row">
             <div class="col"></div>
@@ -54,6 +75,10 @@
             <div class="col" id="pos7"></div>
         </div>
     </div>
+    <div class="container-fluid">
+        <div id="asked"></div>
+        <div id="explanation"></div>
+    </div>
 
 <!-- START ALL THE JAVASCRIPT -->
 
@@ -64,6 +89,7 @@
         deck.getDeck(); //Call this so you can always draw cards from an unshuffled deck.
 
         const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+        const explanation =document.getElementById('explanation');
         const alert = (message, type) => {
         const wrapper = document.createElement('div');
         wrapper.innerHTML = [
@@ -80,7 +106,7 @@
         //Clear the user entry, but store the question as a value. This will be used later.
         document.getElementById("askBtn").addEventListener("click", () => {
         let question = document.getElementById("question");
-        //document.getElementById("asked").innerHTML = question.value; //Save for later...
+        document.getElementById("asked").innerHTML = `<p>${question.value}</p>`; //Save for later...
         question.value = "";
         });
 
@@ -110,6 +136,7 @@
             deck.suitTrump +
             '.jpg" class="signifactor img-fluid">';
         console.log("Signifactor", deck._deck[0]);
+        explanation.innerHTML = `<p><a href="cards.html#${deck._deck[0].Place}-${deck.suitTrump}">${deck._deck[0].Place} - ${deck.suitTrump}</a></p>`;
         });
 
         /* COVER CARD BUTTON */
@@ -128,6 +155,7 @@
             deck.suitTrump +
             '.jpg" class="covers img-fluid">';
             console.log("Cover", deck._deck[1]);
+            explanation.innerHTML += `<p><a href="cards.html#${deck._deck[1].Place}-${deck.suitTrump}">${deck._deck[1].Place} - ${deck.suitTrump}</a></p>`;
         }
         });
 
@@ -147,6 +175,7 @@
             deck.suitTrump +
             '.jpg" class="cross img-fluid">';
             console.log("Cross", deck._deck[2]);
+            explanation.innerHTML += `<p><a href="cards.html#${deck._deck[2].Place}-${deck.suitTrump}">${deck._deck[2].Place} - ${deck.suitTrump}</a></p>`;
         }
         });
 
@@ -166,6 +195,7 @@
                 deck.suitTrump +
                 '.jpg" class="img-fluid">';
             console.log(position, deck._deck[i]);
+            explanation.innerHTML += `<p><a href="cards.html#${deck._deck[i].Place}-${deck.suitTrump}">${deck._deck[i].Place} - ${deck.suitTrump}</a></p>`;
             }
         }
         });
@@ -177,6 +207,7 @@
             let position = "pos" + i.toString();
             document.getElementById(position).innerHTML = "";
         }
+        explanation.innerHTML = "";
         });
     </script>
 </body>
