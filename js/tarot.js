@@ -70,7 +70,7 @@ class DECK {
         this._deck.push(minorArcana);
       }
     }
-    //Let's assign a value to the minor arcana so that we can compare them again the Major Arcana.
+    //Let's assign a value to the minor arcana so that we can compare them against the Major Arcana.
     for (let i = 22; i < this._deck.length; i++) {
       switch (this._deck[i].Place) {
         case "Ace":
